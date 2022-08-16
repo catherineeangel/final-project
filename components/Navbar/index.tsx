@@ -1,32 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
-import LoginModal from "../Form/Login";
-import Form from "../Form";
+import { useAppDispatch, useAppSelector } from "@hooks/useApp";
+import { logout } from "redux/features/user/userSlice";
+import LoginButton from "@components/Form/Login";
+import { Typography } from "@mui/material";
 
 const Navbar = () => {
-  const [open, setOpen] = useState<boolean>(false);
-  const handleOpen = () => {
-    setOpen(true);
+  const { userInfo } = useAppSelector((state) => state.user);
+  const { token: userToken, username } = userInfo ?? {
+    token: null,
+    username: null,
   };
-  const handleClose = () => {
-    setOpen(false);
-  };
+
+  const dispatch = useAppDispatch();
+
   return (
     <nav className="px-10 py-5 bg-blue-900 w-full">
       <div className="flex flex-row justify-between">
         <p className="text-white text-4xl font-serif font-semibold">
           Movie Geeks
         </p>
-        {/* ini pake redux si kalo dh login dll */}
-        <Button
-          className="bg-blue-600"
-          variant="contained"
-          onClick={handleOpen}
-        >
-          Login
-        </Button>
+
+        {!!userToken ? (
+          <div className="flex flex-row items-center space-x-4">
+            <Typography className="text-white text-xl">
+              Hi, {username}!
+            </Typography>
+            <Button
+              className="bg-blue-600"
+              variant="contained"
+              onClick={() => {
+                dispatch(logout());
+              }}
+            >
+              Logout
+            </Button>
+          </div>
+        ) : (
+          <LoginButton />
+        )}
       </div>
-      <Form open={open} handleOpen={handleOpen} handleClose={handleClose} />
     </nav>
   );
 };
