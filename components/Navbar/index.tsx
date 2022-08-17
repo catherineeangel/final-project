@@ -22,17 +22,19 @@ const Navbar = () => {
     <nav className="px-10 py-5 bg-blue-900 w-full">
       <div className="flex flex-row justify-between">
         <Link href="/">
-          <p className="hidden md:block text-white text-4xl font-serif font-semibold">
-            Movie Geeks
-          </p>
-          <div className="md:hidden">
-            <Image
-              alt="Movie Geeks"
-              src={"/movie-icon.png"}
-              width={40}
-              height={40}
-            />
-          </div>
+          <>
+            <p className="hidden md:block text-white text-4xl font-serif font-semibold">
+              Movie Geeks
+            </p>
+            <div className="md:hidden">
+              <Image
+                alt="Movie Geeks"
+                src={"/movie-icon.png"}
+                width={40}
+                height={40}
+              />
+            </div>
+          </>
         </Link>
 
         {!!userToken ? (
