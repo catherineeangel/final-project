@@ -1,3 +1,4 @@
+//@ts-nocheck
 import axios from "axios";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -11,7 +12,7 @@ type PageProps = {
 };
 
 const Category: NextPage<PageProps> = ({ threads, id }) => {
-  const { role, token } = useAuth();
+  const { token } = useAuth();
   const router = useRouter();
   const { name } = router.query;
 
