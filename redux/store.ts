@@ -1,5 +1,4 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./features/counter/counterSlice";
 import userReducer from "./features/user/userSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
@@ -11,7 +10,6 @@ const persistConfig = {
 };
 const rootReducer = combineReducers({
   user: userReducer,
-  counter: counterReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
