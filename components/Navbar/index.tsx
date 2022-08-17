@@ -7,6 +7,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { IconButton, Typography } from "@mui/material";
 import Image from "next/image";
 import { blue } from "@mui/material/colors";
+import Link from "next/link";
 
 const Navbar = () => {
   const { userInfo } = useAppSelector((state) => state.user);
@@ -20,7 +21,7 @@ const Navbar = () => {
   return (
     <nav className="px-10 py-5 bg-blue-900 w-full">
       <div className="flex flex-row justify-between">
-        <a href="/">
+        <Link href="/">
           <p className="hidden md:block text-white text-4xl font-serif font-semibold">
             Movie Geeks
           </p>
@@ -32,7 +33,7 @@ const Navbar = () => {
               height={40}
             />
           </div>
-        </a>
+        </Link>
 
         {!!userToken ? (
           <>
