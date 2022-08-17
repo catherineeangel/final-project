@@ -12,6 +12,8 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "@hooks/useApp";
 import { registerUser, userLogin } from "redux/features/user/userActions";
+import LoginIcon from "@mui/icons-material/Login";
+import { blue } from "@mui/material/colors";
 
 const LoginButton = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -68,15 +70,28 @@ const LoginButton = () => {
 
   return (
     <div className="">
-      <Button
-        className="bg-blue-600"
-        variant="contained"
-        onClick={() => {
-          setOpen(true);
-        }}
-      >
-        Login
-      </Button>
+      <div className=" hidden md:block">
+        <Button
+          className="bg-blue-600"
+          variant="contained"
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          Login
+        </Button>
+      </div>
+      <div className="md:hidden">
+        <IconButton>
+          <LoginIcon
+            style={{ color: blue[100], fontSize: 32 }}
+            className="border-2 border-gray-300 rounded p-1"
+            onClick={() => {
+              setOpen(true);
+            }}
+          />
+        </IconButton>
+      </div>
       <Modal
         className="flex justify-center items-center h-screen"
         open={open}
@@ -142,7 +157,7 @@ const LoginButton = () => {
                 Don&apos;t have an account?
                 <a
                   onClick={() => setRegister(true)}
-                  className="text-blue-500 underline"
+                  className="cursor-pointer text-blue-500 underline"
                 >
                   Sign up
                 </a>
@@ -152,7 +167,7 @@ const LoginButton = () => {
                 Have an existing account?
                 <a
                   onClick={() => setRegister(false)}
-                  className="text-blue-500 underline"
+                  className="cursor-pointer text-blue-500 underline"
                 >
                   Login
                 </a>

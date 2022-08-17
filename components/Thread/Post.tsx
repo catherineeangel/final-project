@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Card,
   CardActions,
   CardContent,
@@ -12,16 +11,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
-import ShareIcon from "@mui/icons-material/Share";
+import React, { FC, useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-
-import { red } from "@mui/material/colors";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Reply from "./Reply";
 import toast from "react-hot-toast";
 import Votes from "./Votes";
+import { useAuth } from "@hooks/useAuth";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -38,46 +36,68 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-const Post = () => {
+interface PostProps {
+  id: string;
+  content: string;
+  upvote: number;
+  downvote: number;
+  owner: string;
+  isStarter: boolean;
+  edited: boolean;
+  editMode: boolean;
+}
+
+const Post: FC<PostProps> = ({
+  id,
+  content,
+  edited,
+  upvote,
+  downvote,
+  isStarter,
+  editMode,
+}) => {
+  const { role, token } = useAuth();
   const [expanded, setExpanded] = useState(false);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
-  // let hex = Math.floor(Math.random() * 0xffffff);
-  // let color = "#" + hex.toString(16);
+  const handleAddPost = () => {};
+  const handleDeletePost = () => {};
 
   return (
     <div>
-      <Card>
-        <CardHeader
-          avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-              {/* ini tar color avatarnya di randomize */}RA
-            </Avatar>
-          }
-          action={
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
-            </IconButton>
-          }
-          titleTypographyProps={{ variant: "h6" }}
-          title="Shrimp and Chorizo Paella"
-          subheader="September 14, 2016"
-        />
+      <Card className="border-b-2">
         <CardContent>
-          <Typography variant="body1">
-            This impressive paella is a perfect party dish and a fun meal to
-            cook together with your guests. Add 1 cup of frozen peas along with
-            the mussels, if you like.
+          <Typography variant="body1" className="pl-6">
+            {content}
           </Typography>
         </CardContent>
-        <CardActions disableSpacing>
-          <Votes className="w-full" />
+        <CardActions disableSpacing className="relative -mt-8 md:-mt-10">
+          {editMode ? (
+            <div className="w-full flex items-center flex-row justify-end">
+              <IconButton>
+                <EditIcon />
+              </IconButton>
+              <IconButton>
+                <DeleteForeverIcon />
+              </IconButton>
+            </div>
+          ) : (
+            <>
+              {edited && (
+                <p className="absolute right-40 bottom-4 text-[12px] italic opacity-60 tracking-wide">
+                  edited
+                </p>
+              )}
+              <Votes
+                className="w-full"
+                postId={id}
+                upvote={upvote}
+                downvote={downvote}
+              />
+            </>
+          )}
           <ExpandMore
             expand={expanded}
-            onClick={handleExpandClick}
+            onClick={() => setExpanded(!expanded)}
             aria-expanded={expanded}
             aria-label="show more"
           >

@@ -25,7 +25,7 @@ const Reply = () => {
   return (
     <div>
       <Card>
-        <CardContent>
+        <CardContent className="-pb-10">
           <Typography variant="body2" paragraph>
             Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet
             over medium-high heat. Add chicken, shrimp and chorizo, and cook,
@@ -36,7 +36,7 @@ const Reply = () => {
             fragrant, about 10 minutes. Add saffron broth and remaining 4 1/2
             cups chicken broth; bring to a boil.
           </Typography>
-          <div className="w-full flex justify-end">
+          <div className="w-full flex justify-end -mt-4">
             {showReply && (
               <>
                 <TextField
