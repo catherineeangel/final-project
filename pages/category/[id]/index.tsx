@@ -14,13 +14,21 @@ type PageProps = {
 const Category: NextPage<PageProps> = ({ threads, id }) => {
   const { token } = useAuth();
   const router = useRouter();
-  const { name } = router.query;
+  const { category } = router.query;
 
   return (
     <div className="md:p-20 p-10">
       <AddThread categoryId={id} token={token} />
-      {threads?.data?.map(({ id, name }: any) => {
-        return <ThreadTitle key={id} name={name} threadId={id} />;
+      {threads?.data?.map(({ id: threadId, name }: any) => {
+        return (
+          <ThreadTitle
+            key={threadId}
+            name={name}
+            threadId={threadId}
+            category={category}
+            catId={id}
+          />
+        );
       })}
     </div>
   );

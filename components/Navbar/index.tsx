@@ -22,7 +22,7 @@ const Navbar = () => {
     <nav className="px-10 py-5 bg-blue-900 w-full">
       <div className="flex flex-row justify-between">
         <Link href="/">
-          <>
+          <div className="cursor-pointer">
             <p className="hidden md:block text-white text-4xl font-serif font-semibold">
               Movie Geeks
             </p>
@@ -34,7 +34,7 @@ const Navbar = () => {
                 height={40}
               />
             </div>
-          </>
+          </div>
         </Link>
 
         {!!userToken ? (

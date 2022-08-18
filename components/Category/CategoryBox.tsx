@@ -88,7 +88,12 @@ const CategoryBox: FC<CategoryBoxProps> = ({ text, id, icon }) => {
             </IconButton>
           </>
         ) : (
-          <Link href={`/category/${id}?name=${text}`}>
+          <Link
+            href={{
+              pathname: `/category/${id}`,
+              query: { category: `${text}` },
+            }}
+          >
             <p className="py-20 cursor-pointer font-serif text-2xl font-semibold opacity-80 text-center">
               {text}
             </p>

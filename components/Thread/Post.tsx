@@ -152,7 +152,7 @@ const Post: FC<PostProps> = ({
 
   return (
     <div>
-      <Card className="border-b-2">
+      <Card className="border-b-2 px-5">
         <CardContent>
           {!!replyId && (
             <div className="flex flex-row pl-4 opacity-80">

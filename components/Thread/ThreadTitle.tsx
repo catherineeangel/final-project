@@ -13,9 +13,16 @@ import axios from "axios";
 interface ThreadTitleProps {
   name: string;
   threadId: string;
+  category: string;
+  catId;
 }
 
-const ThreadTitle: FC<ThreadTitleProps> = ({ name, threadId }) => {
+const ThreadTitle: FC<ThreadTitleProps> = ({
+  name,
+  threadId,
+  category,
+  catId,
+}) => {
   const { role, token } = useAuth();
   const [showEditField, setShowEditField] = useState<boolean>(false);
   const [editedTitle, setEditedTitle] = useState<string>("");
@@ -96,7 +103,16 @@ const ThreadTitle: FC<ThreadTitleProps> = ({ name, threadId }) => {
           </IconButton>
         </>
       ) : (
-        <Link href={router.basePath + "/thread/" + threadId + "?title=" + name}>
+        <Link
+          href={{
+            pathname: `/thread/${threadId}`,
+            query: {
+              title: `${name}`,
+              category: `${category}`,
+              catId: `${catId}`,
+            },
+          }}
+        >
           <Typography className="w-full" variant="h5">
             {name}
           </Typography>
