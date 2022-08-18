@@ -9,9 +9,15 @@ import toast from "react-hot-toast";
 import { useQuery } from "react-query";
 import { getCategory } from "queries/getCategory";
 import { useAuth } from "@hooks/useAuth";
+import { SkeletonWrapper } from "@components/Skeleton";
+import Skeleton from "react-loading-skeleton";
 
 const Home: NextPage = () => {
-  const { data: categories, refetch } = useQuery("categories", getCategory);
+  const {
+    data: categories,
+    refetch,
+    isLoading,
+  } = useQuery("categories", getCategory);
 
   const { role, token } = useAuth();
 
@@ -81,13 +87,27 @@ const Home: NextPage = () => {
           )}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 place-items-center ">
-          {categories?.map(({ id, name }: any) => {
-            return (
-              <div key={id}>
-                <CategoryBox text={name} id={id} />
-              </div>
-            );
-          })}
+          {isLoading ? (
+            <>
+              <SkeletonWrapper baseColor="#2D2F45" highlightColor="#3E405B">
+                <Skeleton
+                  count={6}
+                  height="224"
+                  width="224px"
+                  borderRadius="10px"
+                  className="mb-4"
+                />
+              </SkeletonWrapper>
+            </>
+          ) : (
+            categories?.map(({ id, name }: any) => {
+              return (
+                <div key={id}>
+                  <CategoryBox text={name} id={id} />
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
     </div>
