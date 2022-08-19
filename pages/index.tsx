@@ -9,8 +9,8 @@ import toast from "react-hot-toast";
 import { useQuery } from "react-query";
 import { getCategory } from "queries/getCategory";
 import { useAuth } from "@hooks/useAuth";
-import { SkeletonWrapper } from "@components/Skeleton";
 import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Home: NextPage = () => {
   const {
@@ -87,27 +87,26 @@ const Home: NextPage = () => {
           )}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 place-items-center ">
-          {isLoading ? (
-            <>
-              <SkeletonWrapper baseColor="#2D2F45" highlightColor="#3E405B">
-                <Skeleton
-                  count={6}
-                  height="224"
-                  width="224px"
-                  borderRadius="10px"
-                  className="mb-4"
-                />
-              </SkeletonWrapper>
-            </>
-          ) : (
-            categories?.map(({ id, name }: any) => {
-              return (
-                <div key={id}>
-                  <CategoryBox text={name} id={id} />
-                </div>
-              );
-            })
-          )}
+          {isLoading
+            ? [...Array(6)].map((_, i) => {
+                return (
+                  <Skeleton
+                    key={i}
+                    count={1}
+                    height="224px"
+                    width="224px"
+                    borderRadius="10px"
+                    className="mr-4"
+                  />
+                );
+              })
+            : categories?.map(({ id, name }: any) => {
+                return (
+                  <div key={id}>
+                    <CategoryBox text={name} id={id} />
+                  </div>
+                );
+              })}
         </div>
       </div>
     </div>
