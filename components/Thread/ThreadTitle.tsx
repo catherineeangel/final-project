@@ -63,7 +63,7 @@ const ThreadTitle: FC<ThreadTitleProps> = ({
       });
   };
 
-  const handleDelete = (id: any) => {
+  const handleDelete = () => {
     if (counter == 0) {
       setCounter(counter + 1);
       toast("Click once more to delete.", {
@@ -126,7 +126,7 @@ const ThreadTitle: FC<ThreadTitleProps> = ({
           <IconButton onClick={() => setShowEditField(!showEditField)}>
             {showEditField ? <CloseIcon /> : <EditIcon />}
           </IconButton>
-          <IconButton onClick={(id) => handleDelete(id)}>
+          <IconButton onClick={handleDelete}>
             <DeleteForeverIcon />
           </IconButton>
         </>

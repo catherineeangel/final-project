@@ -113,7 +113,6 @@ const LoginButton = () => {
           <div className="flex flex-col w-full h-full justify-center items-center border-gray-600/70 rounded-lg border-2">
             <TextField
               required
-              id="outlined-required"
               label="Username"
               onChange={(e) => {
                 setUsername(e.target.value);
@@ -123,7 +122,6 @@ const LoginButton = () => {
             />
             <TextField
               required
-              id="outlined-required"
               label="Password"
               type={showPass ? "text" : "password"}
               onChange={(e) => {

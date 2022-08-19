@@ -37,7 +37,7 @@ interface PostProps {
 }
 
 const Post: FC<PostProps> = ({
-  id,
+  id: postId,
   content,
   edited,
   upvote,
@@ -74,7 +74,7 @@ const Post: FC<PostProps> = ({
         {
           threadId: threadId,
           content: contentPost,
-          replyId: id,
+          replyId: postId,
         },
         {
           headers: {
@@ -96,7 +96,7 @@ const Post: FC<PostProps> = ({
   const handleEditPost = () => {
     axios
       .put(
-        `${process.env.NEXT_PUBLIC_API_URL}/post/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/post/${postId}`,
         {
           content: editedContent,
         },
@@ -131,7 +131,7 @@ const Post: FC<PostProps> = ({
       return;
     }
     axios
-      .delete(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`, {
+      .delete(`${process.env.NEXT_PUBLIC_API_URL}/post/${postId}`, {
         headers: {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_BEARER_TOKEN}`,
           "X-USER-TOKEN": `${token}`,
@@ -146,14 +146,32 @@ const Post: FC<PostProps> = ({
       });
   };
 
+  const scrollToPost = () => {
+    console.log(document.getElementById(`${replyId}`));
+    const post = document.getElementById(`${replyId}`);
+    window.scrollTo({
+      top: post.offsetTop - 60,
+      behavior: "smooth",
+    });
+    post.style.backgroundColor = "#90caf9";
+    setTimeout(() => {
+      post.style.backgroundColor = "white";
+    }, 2000);
+  };
+
   return (
     <div>
-      <Card className="border-b-2 px-5" id={id}>
+      <Card className="border-b-2 px-5" id={postId}>
         <CardContent>
           {!!replyId && (
             <div className="flex flex-row pl-4 opacity-80">
               <ReplyIcon fontSize="small" />
-              <p className="italic">Replied to : {replyId}</p>
+              <p className="italic">
+                Replied to : &nbsp;
+                <button className="underline italic" onClick={scrollToPost}>
+                  this post
+                </button>
+              </p>
             </div>
           )}
           {isEditPost ? (
@@ -202,7 +220,7 @@ const Post: FC<PostProps> = ({
               )}
               <Votes
                 className="w-full"
-                postId={id}
+                postId={postId}
                 upvote={upvote}
                 downvote={downvote}
               />
