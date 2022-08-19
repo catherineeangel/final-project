@@ -197,7 +197,7 @@ const Post: FC<PostProps> = ({
             </Typography>
           )}
         </CardContent>
-        <CardActions disableSpacing className="relative -mt-8 md:-mt-10">
+        <CardActions disableSpacing className="relative -mt-8 ">
           {!!token && editMode ? (
             <div className="w-full flex items-center flex-row justify-end min-h-[44px]">
               {!isStarter && (
