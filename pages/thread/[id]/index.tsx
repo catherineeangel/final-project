@@ -69,7 +69,7 @@ const Thread: NextPage = ({ threads, id: threadId }: any) => {
           {threads?.name}
         </Typography>
         {!!username && (
-          <div className="flex flex-row space-x-2">
+          <div className="flex flex-row pl-2 space-x-2">
             <Button
               size="small"
               className="bg-grey"
