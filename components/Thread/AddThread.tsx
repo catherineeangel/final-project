@@ -1,7 +1,9 @@
-import { Button, IconButton, TextField } from "@mui/material";
+import { Button, Collapse, IconButton, TextField } from "@mui/material";
 import axios from "axios";
 import React, { FC, useState } from "react";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 interface AddThreadProps {
   categoryId: string;
@@ -9,28 +11,40 @@ interface AddThreadProps {
 }
 
 const AddThread: FC<AddThreadProps> = ({ categoryId, token }) => {
+  const router = useRouter();
   const [showAddField, setShowAddField] = useState<boolean>(false);
 
   const [threadTitle, setThreadTitle] = useState<string>("");
   const [firstPost, setFirstPost] = useState<string>("");
 
   const handleAddThread = () => {
-    axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/thread/`,
-      {
-        categoryId: categoryId,
-        name: threadTitle,
-        firstPost: {
-          content: firstPost,
+    axios
+      .post(
+        `${process.env.NEXT_PUBLIC_API_URL}/thread/`,
+        {
+          categoryId: categoryId,
+          name: threadTitle,
+          firstPost: {
+            content: firstPost,
+          },
         },
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_BEARER_TOKEN}`,
-          "X-USER-TOKEN": `${token}`,
-        },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_BEARER_TOKEN}`,
+            "X-USER-TOKEN": `${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        toast.success("Thread added!");
+        setThreadTitle("");
+        setFirstPost("");
+        router.replace(router.asPath);
+        setShowAddField(false);
+      })
+      .catch((e) => {
+        toast.error(e.response.data.error);
+      });
   };
   return (
     <>
@@ -42,27 +56,37 @@ const AddThread: FC<AddThreadProps> = ({ categoryId, token }) => {
               onClick={() => {
                 setShowAddField(!showAddField);
               }}
+              sx={{
+                transform: !showAddField ? "rotate(0deg)" : "rotate(45deg)",
+              }}
             >
-              <LibraryAddIcon
-                className={`${showAddField ? "rotate-45 " : ""} transition-all`}
-              />
+              <LibraryAddIcon />
             </IconButton>
           </div>
         </div>
       )}
-      {showAddField && (
+
+      <Collapse in={showAddField} timeout="auto" unmountOnExit>
         <div className="ease-in-out p-4 flex flex-col w-full gap-y-2 items-end">
           <div className="flex flex-col w-full gap-y-2">
             <TextField
               label="Thread Title"
               variant="standard"
               placeholder="Thread Title"
+              value={threadTitle}
+              onChange={(e) => {
+                setThreadTitle(e.target.value);
+              }}
             />
             <TextField
               label="Starter Post"
               variant="standard"
               placeholder="Post"
               multiline
+              value={firstPost}
+              onChange={(e) => {
+                setFirstPost(e.target.value);
+              }}
             />
           </div>
           <Button
@@ -74,7 +98,7 @@ const AddThread: FC<AddThreadProps> = ({ categoryId, token }) => {
             Add
           </Button>
         </div>
-      )}
+      </Collapse>
     </>
   );
 };

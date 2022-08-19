@@ -8,6 +8,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { useAuth } from "@hooks/useAuth";
+import { useRouter } from "next/router";
 
 interface CategoryBoxProps {
   text: string;
@@ -16,6 +17,8 @@ interface CategoryBoxProps {
 }
 
 const CategoryBox: FC<CategoryBoxProps> = ({ text, id, icon }) => {
+  const router = useRouter();
+
   const { role, token } = useAuth();
 
   const [counter, setCounter] = useState<number>(0);
@@ -42,6 +45,7 @@ const CategoryBox: FC<CategoryBoxProps> = ({ text, id, icon }) => {
       )
       .then((res) => {
         res.status == 200 ? toast.success("Category edited") : "";
+        setShowField(false);
       })
       .catch((e) => {
         toast.error(e.response.data.error);
@@ -64,6 +68,7 @@ const CategoryBox: FC<CategoryBoxProps> = ({ text, id, icon }) => {
       })
       .then((res) => {
         res.status == 200 ? toast.success("Category deleted") : "";
+        router.replace(router.asPath);
       })
       .catch((e) => {
         toast.error(e.response.data.error);
@@ -95,7 +100,7 @@ const CategoryBox: FC<CategoryBoxProps> = ({ text, id, icon }) => {
             }}
           >
             <p className="py-20 cursor-pointer font-serif text-2xl font-semibold opacity-80 text-center">
-              {text}
+              {name}
             </p>
           </Link>
         )}

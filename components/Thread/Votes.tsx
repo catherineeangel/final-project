@@ -5,6 +5,7 @@ import { IconButton } from "@mui/material";
 import axios from "axios";
 import { useAuth } from "@hooks/useAuth";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 interface VotesProps {
   postId: string;
@@ -22,6 +23,7 @@ const Votes: FC<VotesProps> = ({
   className,
 }) => {
   const { token } = useAuth();
+  const router = useRouter();
 
   const handleUpVote = () => {
     axios
@@ -40,29 +42,37 @@ const Votes: FC<VotesProps> = ({
       )
       .then((res) => {
         if (res.status == 200) {
-          toast.success("Post Liked!");
+          toast.success("Upvote success");
+          router.replace(router.asPath);
         }
       })
       .catch((e) => {
-        console.log(e);
         toast.error(e.response.data.error);
       });
   };
 
   const handleDownVote = () => {
-    axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/post/vote`,
-      {
-        postId: `${postId}`,
-        voteType: "downvote",
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_BEARER_TOKEN}`,
-          "X-USER-TOKEN": `${token}`,
+    axios
+      .post(
+        `${process.env.NEXT_PUBLIC_API_URL}/post/vote`,
+        {
+          postId: `${postId}`,
+          voteType: "downvote",
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_BEARER_TOKEN}`,
+            "X-USER-TOKEN": `${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        toast.success("Downvote success");
+        router.replace(router.asPath);
+      })
+      .catch((e) => {
+        toast.error(e.response.data.error);
+      });
   };
   return (
     <div className={`${className} flex items-center flex-row justify-end`}>

@@ -37,7 +37,8 @@ const Category: NextPage<PageProps> = ({ threads, id }) => {
           className="w-full px-10 border py-6 opacity-60"
           variant="h6"
         >
-          No thread for this category yet. Login to create one.
+          No thread for this category yet.
+          {!!token ? "Create one." : "Login to create one."}
         </Typography>
       )}
     </div>

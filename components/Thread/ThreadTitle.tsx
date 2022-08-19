@@ -55,6 +55,7 @@ const ThreadTitle: FC<ThreadTitleProps> = ({
         if (res.status == 200) {
           toast.success("Thread Edited");
           setShowEditField(false);
+          router.replace(router.asPath);
         }
       })
       .catch((e) => {
@@ -72,7 +73,7 @@ const ThreadTitle: FC<ThreadTitleProps> = ({
     }
 
     axios
-      .delete(`${process.env.NEXT_PUBLIC_API_URL}/thread/${id}`, {
+      .delete(`${process.env.NEXT_PUBLIC_API_URL}/thread/${threadId}`, {
         headers: {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_BEARER_TOKEN}`,
           "X-USER-TOKEN": `${token}`,
@@ -80,6 +81,7 @@ const ThreadTitle: FC<ThreadTitleProps> = ({
       })
       .then((res) => {
         res.status == 200 ? toast.success("Category deleted") : "";
+        router.replace(router.asPath);
       })
       .catch((e) => {
         toast.error(e.response.data.error);

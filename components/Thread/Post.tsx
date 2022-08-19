@@ -20,20 +20,8 @@ import toast from "react-hot-toast";
 import Votes from "./Votes";
 import { useAuth } from "@hooks/useAuth";
 import axios from "axios";
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
-
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(360deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+import { useRouter } from "next/router";
+import ExpandMore from "@components/Expand";
 
 interface PostProps {
   id: string;
@@ -59,6 +47,8 @@ const Post: FC<PostProps> = ({
   threadId,
   replyId,
 }) => {
+  const router = useRouter();
+
   const { role, token } = useAuth();
   const [expanded, setExpanded] = useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0);
@@ -95,6 +85,9 @@ const Post: FC<PostProps> = ({
       )
       .then((res) => {
         toast.success("Reply Added");
+        setContentPost("");
+        setExpanded(false);
+        router.replace(router.asPath);
       })
       .catch((e) => {
         toast.error(e.response.data.error);
@@ -103,7 +96,7 @@ const Post: FC<PostProps> = ({
   const handleEditPost = () => {
     axios
       .put(
-        `${process.env.NEXT_PUBLIC_API_URL}/post/`,
+        `${process.env.NEXT_PUBLIC_API_URL}/post/${id}`,
         {
           content: editedContent,
         },
@@ -117,6 +110,8 @@ const Post: FC<PostProps> = ({
       .then((res) => {
         res.status;
         toast.success("Post Edited");
+        setIsEditPost(false);
+        router.replace(router.asPath);
       })
       .catch((e) => {
         const err = e.response.data.error;
@@ -144,6 +139,7 @@ const Post: FC<PostProps> = ({
       })
       .then((res) => {
         toast.success("Post Deleted");
+        router.replace(router.asPath);
       })
       .catch((e) => {
         toast.error(e.response.data.error);
@@ -152,12 +148,12 @@ const Post: FC<PostProps> = ({
 
   return (
     <div>
-      <Card className="border-b-2 px-5">
+      <Card className="border-b-2 px-5" id={id}>
         <CardContent>
           {!!replyId && (
             <div className="flex flex-row pl-4 opacity-80">
               <ReplyIcon fontSize="small" />
-              <p className="italic">Replied to :</p>
+              <p className="italic">Replied to : {replyId}</p>
             </div>
           )}
           {isEditPost ? (
@@ -191,7 +187,7 @@ const Post: FC<PostProps> = ({
                   <EditIcon />
                 </IconButton>
               )}
-              {role == "admin" && (
+              {!isStarter && role == "admin" && (
                 <IconButton onClick={handleDeletePost}>
                   <DeleteForeverIcon />
                 </IconButton>
@@ -231,6 +227,10 @@ const Post: FC<PostProps> = ({
               variant="standard"
               placeholder="Reply"
               multiline
+              value={contentPost}
+              onChange={(e) => {
+                setContentPost(e.target.value);
+              }}
             />
             <IconButton aria-label="reply" onClick={handleAddReply}>
               <SendIcon fontSize="small" />
