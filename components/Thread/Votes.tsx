@@ -47,7 +47,12 @@ const Votes: FC<VotesProps> = ({
         }
       })
       .catch((e) => {
-        toast.error(e.response.data.error);
+        const err = e.response.data.error;
+        if (err == "X-USER-TOKEN header not provided") {
+          toast.error("Login to Vote");
+          return;
+        }
+        toast.error(err);
       });
   };
 
@@ -71,7 +76,12 @@ const Votes: FC<VotesProps> = ({
         router.replace(router.asPath);
       })
       .catch((e) => {
-        toast.error(e.response.data.error);
+        console.log(e);
+        const err = e.response.data.error;
+        if (err == "X-USER-TOKEN header not provided") {
+          toast.error("Login to Vote");
+          return;
+        }
       });
   };
   return (

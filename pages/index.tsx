@@ -11,13 +11,20 @@ import { getCategory } from "queries/getCategory";
 import { useAuth } from "@hooks/useAuth";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  const router = useRouter();
   const {
     data: categories,
     refetch,
     isLoading,
+    isError,
   } = useQuery("categories", getCategory);
+
+  if (isError) {
+    router.push("/429");
+  }
 
   const { role, token } = useAuth();
 

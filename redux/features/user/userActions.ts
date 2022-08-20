@@ -28,7 +28,7 @@ export const userLogin = createAsyncThunk(
         config
       );
 
-      toast.success("Successfully Login!");
+      toast.success("Logged in");
 
       return data;
     } catch (error: any) {
@@ -60,7 +60,7 @@ export const registerUser = createAsyncThunk(
         config
       );
 
-      toast.success("Account created successfully!");
+      toast.success("Account created!");
     } catch (error: any) {
       toast.error(error.response.data.error);
       if (error.response && error.response.data.error) {

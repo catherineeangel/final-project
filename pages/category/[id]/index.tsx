@@ -47,20 +47,30 @@ const Category: NextPage<PageProps> = ({ threads, id }) => {
 
 export const getServerSideProps = async ({ res, params }: any) => {
   const { id } = params;
-  const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/category/${id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_BEARER_TOKEN}`,
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/category/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_BEARER_TOKEN}`,
+        },
+      }
+    );
+    return {
+      props: {
+        threads: response.data,
+        id: id,
       },
-    }
-  );
-  return {
-    props: {
-      threads: response.data,
-      id: id,
-    },
-  };
+    };
+  } catch (error) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/429",
+        permanent: false,
+      },
+    };
+  }
 };
 
 export default Category;
