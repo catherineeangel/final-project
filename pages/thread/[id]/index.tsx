@@ -68,8 +68,8 @@ const Thread: NextPage = ({ threads, id: threadId }: any) => {
         <Typography className="pt-8" variant="h4">
           {threads?.name}
         </Typography>
-        {!!username && (
-          <div className="flex flex-row pl-2 space-x-2">
+        <div className="flex flex-row pl-2 space-x-2">
+          {!!username && (
             <Button
               size="small"
               className="bg-grey"
@@ -80,16 +80,16 @@ const Thread: NextPage = ({ threads, id: threadId }: any) => {
             >
               {editMode ? "Read" : "Edit"}
             </Button>
-            <IconButton
-              onClick={() => {
-                setExpand(!expand);
-              }}
-              sx={{ transform: !expand ? "rotate(0deg)" : "rotate(45deg)" }}
-            >
-              <LibraryAddIcon />
-            </IconButton>
-          </div>
-        )}
+          )}
+          <IconButton
+            onClick={() => {
+              !!token ? setExpand(!expand) : toast.error("Login to add post");
+            }}
+            sx={{ transform: !expand ? "rotate(0deg)" : "rotate(45deg)" }}
+          >
+            <LibraryAddIcon />
+          </IconButton>
+        </div>
       </div>
       <Collapse in={expand} timeout="auto" unmountOnExit className="px-12 py-2">
         <p className="font-semibold ">New Post</p>

@@ -48,23 +48,23 @@ const AddThread: FC<AddThreadProps> = ({ categoryId, token }) => {
   };
   return (
     <>
-      {!!token && (
-        <div className="grid place-items-end">
-          <div className="flex flex-row items-center">
-            <p className="text-base text-gray-800 tracking-wide">New Thread</p>
-            <IconButton
-              onClick={() => {
-                setShowAddField(!showAddField);
-              }}
-              sx={{
-                transform: !showAddField ? "rotate(0deg)" : "rotate(45deg)",
-              }}
-            >
-              <LibraryAddIcon />
-            </IconButton>
-          </div>
+      <div className="grid place-items-end">
+        <div className="flex flex-row items-center">
+          <p className="text-base text-gray-800 tracking-wide">New Thread</p>
+          <IconButton
+            onClick={() => {
+              token
+                ? setShowAddField(!showAddField)
+                : toast.error("Login to create a new thread");
+            }}
+            sx={{
+              transform: !showAddField ? "rotate(0deg)" : "rotate(45deg)",
+            }}
+          >
+            <LibraryAddIcon />
+          </IconButton>
         </div>
-      )}
+      </div>
 
       <Collapse in={showAddField} timeout="auto" unmountOnExit>
         <div className="ease-in-out p-4 flex flex-col w-full gap-y-2 items-end">
