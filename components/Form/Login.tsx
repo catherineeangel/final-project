@@ -144,6 +144,7 @@ const LoginButton = () => {
               }}
             />
             <Button
+              disabled={loading}
               className="bg-blue-600 w-[25ch]"
               variant="contained"
               onClick={handleSubmit}
